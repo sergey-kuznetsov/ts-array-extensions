@@ -4,6 +4,10 @@ type TTakeFields<T extends object, V> = {
 }[keyof T];
 
 declare global {
+    interface ArrayConstructor {
+        range: typeof range;
+    }
+
     // eslint-disable-next-line
     interface Array<T> {
         groupBy: typeof groupBy;
@@ -123,6 +127,23 @@ Array.prototype.toSet = toSet;
 
 function toSet<T>(this: Array<T>) {
     return new Set(this);
+}
+
+// type-coverage:ignore-next-line
+Array.range = range;
+
+function range(from: number, to: number) {
+    const result = [];
+
+    if (to<= from) {
+        throw new Error('`to` can\'t be less the `from`');
+    }
+
+    for (let i = from; i<=to;i++) {
+        result.push(i);
+    }
+
+    return result;
 }
 
 export {};
